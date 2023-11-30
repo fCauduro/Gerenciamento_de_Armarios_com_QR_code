@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tela de login</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="login-container">
+        <img id="Senac" src="../fotos/senac-logo.png" alt="Logo do Senac" height="200" width="300">
+        <label for="username"><b>Nome de Usuário</b></label>
+        <input type="text" placeholder="Digite seu nome de usuário" name="username" id="username" required>
+
+        <label for="password"><b>Senha</b></label>
+        <input type="password" placeholder="Digite sua senha" name="password" id="password" required>
+
+        <button type="button" class="login-btn" onclick="authenticate()">Entrar</button>
+    </div>
+
+    <script>
+        function authenticate() {
+            var usuario = document.getElementById('username').value;
+            var senha = document.getElementById('password').value;
+
+            // Criar um objeto com os dados de autenticação
+            var credentials = {
+                usuario: usuario,
+                senha: senha
+            };
+
+            // Configurar as opções para a requisição
+            var options = {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                    // Você pode adicionar outros cabeçalhos se necessário
+                },
+                body: JSON.stringify(credentials)
+            };
+
+            // Fazer a requisição para a API
+            fetch('http://www.armariosapi.somee.com/api/Usuarios/Login', options)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Login falhou. Verifique seu usuário e senha.');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Se a autenticação for bem-sucedida, redirecione para a página desejada
+                    alert('Login bem-sucedido!');
+                    window.location.href = '../tela ler qr/index.html';
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+        }
+    </script>
+</body>
+</html>
